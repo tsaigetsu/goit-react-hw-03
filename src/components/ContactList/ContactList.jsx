@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Contact from './Contact';
+import Contact from '../Contact/Contact';
 const ContactList = ({contacts, deleteContact}) => {
   return (
     <div>
