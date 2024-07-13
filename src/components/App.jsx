@@ -1,72 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import Description from "./Description/Description";
-import Feedback from "./Feedback/Feedback";
-import Options from "./Options/Options";
-import Notification from "./Notification/Notification"
+import ContactForm from './Contact/Contact';
+import SearchBox from './SeacrhBox/SeacrhBox';
+import ContactList from './ContactList/ContactList';
+import Contact from './Contact/Contact';
+
+const initialContacts = [
+    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  ];
 
 const App = () => {
   
-  const [feedback, setFeedback] = useState(() => {
-    const savedFeedback = localStorage.getItem('feedback');
-    return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0 };
-  });
+  const [contacts, setContacts] = useState(initialContacts);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('feedback', JSON.stringify(feedback));
-  }, [feedback]);
-
-  
-    
-    const handleGoodClick = () => {
-        setFeedback(prevFeedback => ({
-            ...prevFeedback,
-            good: prevFeedback.good + 1,
-        }));
+    const storedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (storedContacts) {
+      setContacts(storedContacts);
     }
-    
-    const handleNeutralClick = () => {
-        setFeedback(prevFeedback => ({
-            ...prevFeedback,
-            neutral: prevFeedback.neutral + 1,
-        }));
-    }
+  })
 
-    const handleBadClick = () => {
-        setFeedback(prevFeedback => ({
-            ...prevFeedback,
-            bad: prevFeedback.bad + 1,
-        }));
-    }
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-    const handleReset = () => {
-        setFeedback({
-            good: 0,
-            neutral: 0,
-            bad: 0,
-        })
-    }
+  const addContact = (contact) => {
+    setContacts([...contacts, contact])
+  }
 
-  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
-  
-    const positivePercentage = totalFeedback > 0 ? (feedback.good / totalFeedback * 100).toFixed(2) : 0;
+  const deleteContact = (id) => {
+    setContacts(contacts.filter(contact => contact.id !== id));
+  }
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  }
+
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(searchTerm.toLowerCase()));
   
   return (
     <>
-      <Description />
-        <Options
-          onGoodClick={handleGoodClick}
-          onNeutralClick={handleNeutralClick}
-          onBadClick={handleBadClick}
-        onResetClick={handleReset}
-        hasFeedback={totalFeedback > 0}
-      />
-      {totalFeedback > 0 ? (
-        <Feedback feedback={feedback} totalFeedback={totalFeedback} positivePercentage={positivePercentage} />
-      ) : (
-          <Notification message="Any Feedback yet" />
-      )
-      }
-      
+      <h1>Phonebook</h1>
+      <ContactForm addContact={addContact} />
+      <SearchBox onSearch={handleSearch} />
+      <ContactList contacts={filteredContacts} deleteContact={deleteContact} />
     </>
   );
 }
