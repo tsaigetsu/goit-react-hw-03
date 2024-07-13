@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ContactForm from './Contact/Contact';
-import SearchBox from './SeacrhBox/SeacrhBox';
+import SearchBox from './SearchBox/SearchBox';
 import ContactList from './ContactList/ContactList';
 import Contact from './Contact/Contact';
 
