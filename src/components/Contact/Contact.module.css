@@ -1,26 +1,13 @@
-.friendsList {
-    width: 400px;
-    display: flex;
-    gap: 10px;
-    margin: 10px auto;
-}
-.friendsItem {
+.li {
+    width: 300px;
     list-style: none;
-    padding: 10px;
+    background-color: gray;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    border: 1px solid black;
+    justify-content: space-between;
+    padding: 15px;
+    height: 40px;
     border-radius: 8px;
-    font-weight: 500;
-    gap: 4px;
 }
-.green {
-    color: green;
-    font-size: 12px;
-}
-.red {
-    color: red;
-    font-size: 12px;
+.button:hover {
+    background-color: gray;
 }
